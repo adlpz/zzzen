@@ -28,10 +28,10 @@ var converter = new Showdown.converter({
 });
 
 var templates = {
-	post: 'templates/post.html.mustache',
-	front: 'templates/front.html.mustache',
-	header: 'templates/header.html.mustache',
-	footer: 'templates/footer.html.mustache'
+	post: '../templates/post.html.mustache',
+	front: '../templates/front.html.mustache',
+	header: '../templates/header.html.mustache',
+	footer: '../templates/footer.html.mustache'
 };
 
 var about = {
