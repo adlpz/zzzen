@@ -91,7 +91,7 @@ Database.prototype.getPosts = function() {
 
 	var deferred = Q.defer();
 
-	Post.find({}, "title created format published", function(err, posts) {
+	Post.find({}).sort('created').execFind(function(err, posts) {
 		if (err) deferred.reject(new DatabaseError(err));
 		else {
 			if (posts.length > 0) {
@@ -107,15 +107,12 @@ Database.prototype.getPosts = function() {
 
 Database.prototype.updatePost = function(id, post) {
 	// Update an existing post by ID
-
 	var deferred = Q.defer();
 
-	Post.update({
-		_id: id
-	}, post, function(err, numberAffected, raw) {
+	Post.update({ _id: id }, post, function(err, numberAffected, raw) {
 		if (err) deferred.reject(new DatabaseError(err));
 		else {
-			if (numberAffected) deferrd.resolve({ updated: numberAffected });
+			if (numberAffected) deferred.resolve({ updated: numberAffected });
 			else deferred.reject(new NotFoundError());
 		}
 	});
@@ -126,7 +123,6 @@ Database.prototype.updatePost = function(id, post) {
 
 Database.prototype.addPost = function(post) {
 	// Adds new post
-
 	var deferred = Q.defer();
 
 	if (this.__is_valid_post(post)) {

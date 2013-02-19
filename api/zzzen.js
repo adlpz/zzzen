@@ -15,6 +15,7 @@ var express = require('express');
 var app = express();
 
 app.use(express.bodyParser());
+app.set("jsonp callback", true);
 
 // Permanence
 var database = require('./database.js');
@@ -22,6 +23,8 @@ var database = require('./database.js');
 // Configuration
 var config = require('./config.js');
 
+// Renderer
+var renderer = require('./renderer.js');
 
 // Zzzen implements a simple sort-of-REST API through GET/POST/DELETE requests to endpoints
 // 
@@ -37,18 +40,22 @@ var config = require('./config.js');
 // It's not like digest/md5 is a lot more secure nowadays, and I like the whole stateless
 // deal
 
-function except(res) {
+function except(res, jsonp) {
 	return function(ex) {
-		res.json({
+		var o = {
 			error: ex.type,
-			internal: ex.internal
-		});
+			internal: ex.internal.toString()
+		};
+		if (!jsonp) res.json(o);
+		else res.jsonp(o);
+		
 	};
 }
 
-function response(res) {
+function response(res, jsonp) {
 	return function(obj) {
-		res.send(obj);
+		if (!jsonp)	res.json(obj);
+		else res.jsonp(obj);
 	};
 }
 
@@ -65,47 +72,54 @@ function authenticate(user, pass) {
 app.get('/post/:id', function(req, res) {
 	database.getPost(req.params.id)
 	.then(
-		response(res),
-		except(res)
+		response(res, req.query.callback),
+		except(res, req.query.callback)
 	);
 });
 
 app.get('/posts', function(req, res) {
 	database.getPosts()
 	.then(
-		response(res),
-		except(res)
+		response(res, req.query.callback),
+		except(res, req.query.callback)
 	);
 });
 
 app.post('/post/:id', express.basicAuth(authenticate), function(req, res) {
 	database.updatePost(req.params.id, req.body)
 	.then(
-		response(res),
-		except(res)
+		response(res, req.query.callback),
+		except(res, req.query.callback)
 	);
 });
 
 app.post('/posts', express.basicAuth(authenticate), function(req, res) {
 	database.addPost(req.body)
 	.then(
-		response(res),
-		except(res)
+		response(res, req.query.callback),
+		except(res, req.query.callback)
 	);
 });
 
 app.del('/post/:id', express.basicAuth(authenticate), function(req, res) {
 	database.deletePost(req.params.id)
 	.then(
-		response(res),
-		except(res)
+		response(res, req.query.callback),
+		except(res, req.query.callback)
 	);
 });
 
-// Statics
-
-app.use('/public', express.static(__dirname + '/public'));
-app.use('/client', express.static(__dirname + '/client'));
+// Extra verb: render
+app.get('/render', express.basicAuth(authenticate), function(req, res) {
+	res.type('text/plain');
+	res.status(200);
+	renderer.doRender()
+	.then(
+		function(x){ res.end('Finished rendering');},
+		function(x){ res.end('Ended with errors');},
+		function(x){ res.write(x+'\n'); }
+	);
+});
 
 // Run
 

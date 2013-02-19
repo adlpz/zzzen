@@ -3,7 +3,7 @@
 
 function Configuration() {
 	// Database
-	this.host = 'localhost';
+	this.host = 'zzzen.local';
 	this.db = 'zzzen';
 	// Administration
 	this.user = 'adlpz';
