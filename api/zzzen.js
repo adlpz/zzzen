@@ -115,8 +115,8 @@ app.get('/render', express.basicAuth(authenticate), function(req, res) {
 	res.status(200);
 	renderer.doRender()
 	.then(
-		function(x){ res.end('Finished rendering');},
-		function(x){ res.end('Ended with errors');},
+		function(x){ res.end(x);},
+		function(x){ res.end(x);},
 		function(x){ res.write(x+'\n'); }
 	);
 });

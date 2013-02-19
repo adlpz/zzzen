@@ -97,26 +97,38 @@ function doRender() {
 				var fn = p.title.toLowerCase().replace(/\s/g, '-') + '.html';
 				posts[i].permalink = about.base + fn;
 				var stats = false;
-				try{ 
+				try{
 					stats = fs.statSync(about.posts_dir + fn);
 				} catch(err) {
 					stats = false;
 				}
 				if (stats && stats.isFile()) {
 					if (p.updated > stats.mtime) {
-						fs.writeFileSync(about.posts_dir + fn, renderPost(p));
+						try {
+							fs.writeFileSync(about.posts_dir + fn, renderPost(p));
+						} catch(err) {
+							deferred.reject('Error on file update: ' + err.message);
+						}
 						deferred.notify(fn + ": Updated");
 					} else {
 						deferred.notify(fn + ": Up to date");
 					}
 				} else {
-					fs.writeFileSync(about.posts_dir + fn, renderPost(p), 'utf8');
+					try {
+						fs.writeFileSync(about.posts_dir + fn, renderPost(p), 'utf8');
+					} catch(err) {
+						deferred.reject('Error on file creation: ' + err.message);
+					}
 					deferred.notify(fn + ": Created");
 				}
 			}
 			// Render front page
-			fs.writeFileSync(about.front_page, renderFront(posts),  'utf8');
-			deferred.resolve();
+			try {
+				fs.writeFileSync(about.front_page, renderFront(posts),  'utf8');
+			} catch(err) {
+				deferred.reject('Error on frontpage write: ' + err.message);
+			}
+			deferred.resolve('Finished rendering');
 		});
 	});
 	return deferred.promise;
