@@ -60,3 +60,9 @@ a:hover {
 article img {
 	max-width: 100%;
 }
+
+.meta-post-date {
+	float: left;
+	font-size: .9;
+	color: #999;
+}
