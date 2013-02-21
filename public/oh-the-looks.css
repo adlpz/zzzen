@@ -5,6 +5,17 @@ body {
 	font-family: 'Open Sans', 'Sans', sans-serif;
 	font-weight: 400;
 	font-size: 16px;
+	margin: 0;
+}
+
+a {
+	text-decoration: underline;
+	color: #E04613;
+}
+
+a:hover {
+	background: #E04613;
+	color: #fff;
 }
 
 h1 {
@@ -36,18 +47,14 @@ p {
 }
 
 nav {
-	color: #777;
+	color: #ddd;
+	background: #111;
 	font-size: .8em;
 }
 
-a {
-	text-decoration: underline;
-	color: #E04613;
-}
-
-a:hover {
-	background: #E04613;
+nav a {
 	color: #fff;
+	text-decoration: none;
 }
 
 /* Moving them blocks around */
