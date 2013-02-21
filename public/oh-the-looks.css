@@ -1,0 +1,40 @@
+
+/* Making the written thingies nice */
+
+body {
+	font-family: 'Open Sans', 'Sans', sans-serif;
+	font-weight: 400;
+	font-size: 16px;
+}
+
+h1 {
+	font-size: 2em;
+	font-weight: 400;
+}
+
+h2 {
+	font-size: 1.6em;
+	font-weight: 300;
+	font-style: italic;
+}
+
+h3 {
+	font-size: 1.3em;
+	font-weight: 600;
+}
+
+h4 {
+	font-size: 1.1em;
+	font-weight: 600;
+}
+
+p {
+	line-height: 1.3em;
+}
+
+/* Moving them blocks around */
+
+#the-middle-bit {
+	max-width: 970px;
+	margin: 0 auto;
+}
