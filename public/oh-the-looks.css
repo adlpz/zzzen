@@ -8,12 +8,12 @@ body {
 }
 
 h1 {
-	font-size: 2em;
-	font-weight: 400;
+	font-size: 4em;
+	font-weight: 300;
 }
 
 h2 {
-	font-size: 1.6em;
+	font-size: 2em;
 	font-weight: 300;
 	font-style: italic;
 }
@@ -29,12 +29,34 @@ h4 {
 }
 
 p {
-	line-height: 1.3em;
+	line-height: 1.5em;
+	font-size: 1.2em;
+	font-weight: 300;
+	color: #000;
+}
+
+nav {
+	color: #777;
+	font-size: .8em;
+}
+
+a {
+	text-decoration: underline;
+	color: #E04613;
+}
+
+a:hover {
+	background: #E04613;
+	color: #fff;
 }
 
 /* Moving them blocks around */
 
 #the-middle-bit {
-	max-width: 970px;
+	max-width: 800px;
 	margin: 0 auto;
+}
+
+article img {
+	max-width: 100%;
 }
