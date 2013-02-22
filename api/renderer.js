@@ -13,6 +13,7 @@ var fs = require('fs');
 var util = require('util');
 var Showdown = require('showdown');
 var Q = require('q');
+var Configuration = require('./config.js');
 
 
 exports.doRender = doRender;
@@ -34,22 +35,23 @@ var templates = {
 	footer: '../templates/footer.html.mustache'
 };
 
+
 var about = {
-	title: '0x41//eu',
-	author: 'Adria Lopez',
-	twitter: '@adlpz',
-	email: '41@prealfa.com',
-	base: 'http://zzzen.local/',
-	posts_dir: '../posts/',
-	front_page: '../index.html'
-};
+    title: Configuration.title,
+    author: Configuration.author,
+    twitter: Configuration.twitter,
+    email: Configuration.email,
+    base: Configuration.base_url,
+    posts_dir: Configuration.posts_dir,
+    front_page: Configuration.index_file
+}
 
 ///////////
 // Parts //
 ///////////
 
 function renderPostBody(post, template) {
-	try{ 
+	try{
 		post.content = converter.makeHtml(post.content);
 	} catch(err) {
 		console.log('Showdown Error: ' + err);
