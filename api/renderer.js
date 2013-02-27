@@ -136,7 +136,7 @@ function doRender() {
 			}
 			// Render front page
 			try {
-				fs.writeFileSync(about.front_page, renderFront(preproc_posts),  'utf8');
+				fs.writeFileSync(about.front_page, renderFront(postproc_posts),  'utf8');
 			} catch(err) {
 				deferred.reject('Error on frontpage write: ' + err.message);
 			}
