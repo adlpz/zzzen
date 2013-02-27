@@ -50,14 +50,14 @@ var about = {
 // Parts //
 ///////////
 
+function preprocessPost(post) {
+	post.content = converter.makeHtml(post.content);
+	post.date = (new Date(post.created)).toString("yyyy/MM/dd");
+	return post;
+}
+
 function renderPostBody(post, template) {
-	try{
-		post.content = converter.makeHtml(post.content);
-	} catch(err) {
-		console.log('Showdown Error: ' + err);
-		console.log('On: ' + post);
-	}
-	return Mustache.render(fs.readFileSync(template,'utf8'), post);
+	return Mustache.render(fs.readFileSync(template,'utf8'), preprocessPost(post));
 }
 
 function renderFrontBody(posts, template) {
