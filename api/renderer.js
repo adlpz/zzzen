@@ -128,7 +128,7 @@ function doRender() {
 					}
 				} else {
 					try {
-						fs.writeFileSync(about.posts_dir + fn, renderPost(p), 'utf8');
+						fs.writeFileSync(about.posts_dir + p.file, renderPost(p), 'utf8');
 					} catch(err) {
 						deferred.reject('Error on file creation: ' + err.message);
 					}
