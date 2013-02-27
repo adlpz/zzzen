@@ -51,7 +51,8 @@ var about = {
 ///////////
 
 function preprocessMetadata(post) {
-	post.date = (new Date(post.created)).toString("yyyy/MM/dd");
+	var d = new Date(post.created);
+	post.date = d.getFullYear() + '//' + d.getMonth() + '//' + d.getDay();
 	post.file = post.title.toLowerCase().replace(/\s/g, '-') + '.html';
 	post.permalink = about.base + post.file;
 	return post;
