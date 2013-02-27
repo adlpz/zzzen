@@ -50,14 +50,21 @@ var about = {
 // Parts //
 ///////////
 
-function preprocessPost(post) {
-	post.content = converter.makeHtml(post.content);
+function preprocessMetadata(post) {
 	post.date = (new Date(post.created)).toString("yyyy/MM/dd");
+	post.file = post.title.toLowerCase().replace(/\s/g, '-') + '.html';
+	post.permalink = about.base + post.file;
 	return post;
 }
 
+function preprocessContent(post) {
+	post.content = converter.makeHtml(post.content);
+	return post;
+}
+
+
 function renderPostBody(post, template) {
-	return Mustache.render(fs.readFileSync(template,'utf8'), preprocessPost(post));
+	return Mustache.render(fs.readFileSync(template,'utf8'), preprocessContent(post));
 }
 
 function renderFrontBody(posts, template) {
@@ -94,26 +101,29 @@ function doRender() {
 	.then(function(posts) {
 		// Render each post to html
 		Q.fcall(function() {
+			var postproc_posts = [];
 			for (var i = 0; i < posts.length; i++) {
-				var p = posts[i];
-				var fn = p.title.toLowerCase().replace(/\s/g, '-') + '.html';
-				posts[i].permalink = about.base + fn;
+				var p = preprocessMetadata(posts[i]);
+				postproc_posts.push(p);
 				var stats = false;
 				try{
-					stats = fs.statSync(about.posts_dir + fn);
+					stats = fs.statSync(about.posts_dir + p.file);
 				} catch(err) {
 					stats = false;
 				}
 				if (stats && stats.isFile()) {
 					if (p.updated > stats.mtime) {
 						try {
-							fs.writeFileSync(about.posts_dir + fn, renderPost(p));
+							fs.writeFileSync(
+								about.posts_dir + p.file, 
+								renderPost(preprocessContent(p))
+							);
 						} catch(err) {
 							deferred.reject('Error on file update: ' + err.message);
 						}
-						deferred.notify(fn + ": Updated");
+						deferred.notify(p.file + ": Updated");
 					} else {
-						deferred.notify(fn + ": Up to date");
+						deferred.notify(p.file + ": Up to date");
 					}
 				} else {
 					try {
@@ -121,12 +131,12 @@ function doRender() {
 					} catch(err) {
 						deferred.reject('Error on file creation: ' + err.message);
 					}
-					deferred.notify(fn + ": Created");
+					deferred.notify(p.file + ": Created");
 				}
 			}
 			// Render front page
 			try {
-				fs.writeFileSync(about.front_page, renderFront(posts),  'utf8');
+				fs.writeFileSync(about.front_page, renderFront(preproc_posts),  'utf8');
 			} catch(err) {
 				deferred.reject('Error on frontpage write: ' + err.message);
 			}
