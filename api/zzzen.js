@@ -28,9 +28,9 @@ var renderer = require('./renderer.js');
 
 // CORS Middleware
 var allowCORS = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', config.domain);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', req.headers['access-control-request-headers']);
     next();
 }
 app.use(allowCORS);
@@ -128,6 +128,11 @@ app.get('/render', express.basicAuth(authenticate), function(req, res) {
 		function(x){ res.end(x);},
 		function(x){ res.write(x+'\n'); }
 	);
+});
+
+app.options('/*', function(req, res) {
+	res.status(200);
+	res.end();
 });
 
 // Run
