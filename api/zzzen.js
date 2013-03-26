@@ -26,17 +26,26 @@ var config = require('./config.js');
 // Renderer
 var renderer = require('./renderer.js');
 
+// CORS Middleware
+var allowCORS = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', config.domain);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type';)
+    next();
+}
+app.use(allowCORS);
+
 // Zzzen implements a simple sort-of-REST API through GET/POST/DELETE requests to endpoints
-// 
+//
 // GET /post/:id => Retrieves a single post
 // GET /posts => Retrieves all posts (in excerpt form)
 // POST /post/:id => Overwrites a single post
 // POST /posts => Adds a post to the collection
 // DELETE /post/:id => Deletes a single post
-// 
+//
 // No PUT verbs are allowed. No collection creation/destruction is allowed.
-// 
-// Insertion and deletion require HTTP Basic authentication. If you don't like that, use SSL. 
+//
+// Insertion and deletion require HTTP Basic authentication. If you don't like that, use SSL.
 // It's not like digest/md5 is a lot more secure nowadays, and I like the whole stateless
 // deal
 
@@ -48,7 +57,7 @@ function except(res, jsonp) {
 		};
 		if (!jsonp) res.json(o);
 		else res.jsonp(o);
-		
+
 	};
 }
 
@@ -60,7 +69,7 @@ function response(res, jsonp) {
 }
 
 function authenticate(user, pass) {
-	// Oh noes! No databases! 
+	// Oh noes! No databases!
 	return user == config.user && pass == config.pass;
 }
 

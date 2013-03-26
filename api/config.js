@@ -15,7 +15,9 @@ function Configuration() {
     this.author = 'The Author';
     this.twitter = 'The Author\'s Twitter';
     this.email = 'the_author@example.com';
-    this.base_url = 'http://your.domain/folder/';
+    this.domain = 'http://your.domain';
+    this.base_dir = '/folder/';
+    this.base_url = this.base_dir + this.folder;
     this.posts_dir = '/path/to/your/posts';
     this.index_file = '/path/to/the/index.html';
 }
