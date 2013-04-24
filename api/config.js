@@ -7,19 +7,19 @@ function Configuration() {
 	this.db = 'zzzen';
 	// Administration
 	this.user = 'admin';
-	this.pass = 'pqrf632';
+	this.pass = 'password';
 	// Server
 	this.port = 8080;
     // About
-    this.title = 'Zzzen Blog';
-    this.author = 'The Author';
-    this.twitter = 'The Author\'s Twitter';
-    this.email = 'the_author@example.com';
-    this.domain = 'http://zzzen.local';
-    this.base_dir = '/';
-    this.base_url = this.base_dir + this.folder;
-    this.posts_dir = '/home/adlpz/Projects/zzzen/';
-    this.index_file = '/home/adlpz/Projects/zzzen/index.html';
+    this.title = 'RTF/CC';
+    this.author = 'Adria Lopez';
+    this.twitter = '@adlpz';
+    this.email = 'adria@prealfa.com';
+    this.domain = 'http://rtf.cc';
+    this.base_dir = '/article/';
+    this.base_url = this.domain + this.base_dir;
+    this.posts_dir = '/var/www/rtf/article/';
+    this.index_file = '/var/www/rtf/index.html';
 }
 
 module.exports = new Configuration();

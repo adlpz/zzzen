@@ -46,6 +46,12 @@ p {
 	color: #000;
 }
 
+pre {
+	font-size: 0.8em;
+	overflow: scroll;
+	padding: 10px;
+}
+
 nav {
 	color: #ddd;
 	background: #111;
